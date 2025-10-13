@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opret konto - FJJK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+            border: 3px solid #d4af37;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 12px 30px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border-color: #6c757d;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .links a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .links a:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="header">
+            <h1>FJJK</h1>
+            <p>Opret din konto for at komme i gang</p>
+        </div>
+        
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+        
+        <form method="post" id="register-form">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="username">Brugernavn: *</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email: *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">Fornavn: *</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Efternavn: *</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password1">Adgangskode: *</label>
+                <input type="password" id="password1" name="password1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password2">Bekræft adgangskode: *</label>
+                <input type="password" id="password2" name="password2" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="trainer_for">Træner for: *</label>
+                    <input type="text" id="trainer_for" name="trainer_for" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_number">Reg nr: *</label>
+                    <input type="text" id="reg_number" name="reg_number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="account_number">Konto nr: *</label>
+                <input type="text" id="account_number" name="account_number" required>
+            </div>
+            
+            <button type="submit" class="btn">Opret konto</button>
+        </form>
+        
+        <div class="links">
+            <p>Har du allerede en konto? <a href="/login/">Log ind her</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const password1 = formData.get('password1');
+            const password2 = formData.get('password2');
+            
+            if (password1 !== password2) {
+                showError('Adgangskoderne matcher ikke!');
+                return;
+            }
+            
+            if (password1.length < 8) {
+                showError('Adgangskoden skal være mindst 8 tegn lang!');
+                return;
+            }
+            
+            // Submit via AJAX
+            fetch('/register/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess('Konto oprettet succesfuldt! Du bliver omdirigeret...');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || '/profile/profile-page/';
+                    }, 1500);
+                } else {
+                    showError(data.error || 'Der opstod en fejl ved oprettelse af kontoen');
+                }
+            })
+            .catch(error => {
+                showError('Der opstod en fejl ved oprettelse af kontoen');
+            });
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

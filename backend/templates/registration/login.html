@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log ind - FJJK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            border: 3px solid #d4af37;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 12px 30px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .links a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .links a:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        .admin-info {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h1>FJJK</h1>
+            <p>Log ind for at administrere din profil og kurser</p>
+        </div>
+        
+        <div id="error-message" class="error-message"></div>
+        
+        <form method="post" id="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Brugernavn:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Adgangskode:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn">Log ind</button>
+        </form>
+        
+        <div class="links">
+            <p>Har du ikke en konto? <a href="/register/">Opret konto her</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission - let the server handle redirects
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            // Let the form submit naturally - the server will handle the redirect
+            // This ensures superusers get redirected to admin and regular users to profile
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - FJJK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 3px solid #d4af37;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            color: #d4af37;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            border-bottom: 3px solid #d4af37;
+        }
+
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .profile-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #d4af37;
+            position: relative;
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible-header:hover {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            margin: -10px;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: #d4af37;
+        }
+
+        .collapsible-header.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible-content.expanded {
+            display: block !important;
+        }
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .form-group input:required {
+            border-left: 4px solid #d4af37;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 12px 30px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border-color: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-color: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .kursus-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .kursus-table th {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kursus-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .kursus-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .kursus-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .file-link {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #d4af37;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .empty-state::before {
+            content: '📋';
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .header-links {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .logout-link, .export-link {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .logout-link:hover, .export-link:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        .required-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .required-notice::before {
+            content: '⚠️ ';
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .kursus-table {
+                font-size: 14px;
+            }
+            
+            .kursus-table th,
+            .kursus-table td {
+                padding: 10px 8px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-links">
+                <a href="/logout/" class="logout-link">Log ud</a>
+                {% if user.is_staff %}
+                <a href="/export/" class="export-link">Data Eksport</a>
+                {% endif %}
+            </div>
+            <h1>FJJK Profil</h1>
+            <p>Administrer din profil og kurser</p>
+        </div>
+
+        <div class="content">
+            <!-- Success/Error Messages -->
+            <div id="success-message" class="alert alert-success" style="display: none;"></div>
+            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+
+            <!-- Profile Form -->
+            <div class="profile-section">
+                <h2 class="section-title collapsible-header" onclick="toggleSection('profile-content')">
+                    Profil Information
+                    <span class="toggle-icon">▼</span>
+                </h2>
+                <div id="profile-content" class="collapsible-content" style="display: none;">
+                    <form id="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="username">Brugernavn:</label>
+                            <input type="text" id="username" name="username" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first_name">Fornavn:</label>
+                            <input type="text" id="first_name" name="first_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Efternavn:</label>
+                            <input type="text" id="last_name" name="last_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="trainer_for">Træner for: *</label>
+                            <input type="text" id="trainer_for" name="trainer_for" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_number">Reg nr: *</label>
+                            <input type="text" id="reg_number" name="reg_number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="account_number">Konto nr: *</label>
+                        <input type="text" id="account_number" name="account_number" required>
+                    </div>
+
+                    <button type="submit" class="btn">Gem Profil</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Kursus Form -->
+            <div class="profile-section">
+                <h2 class="section-title">Tilføj Nyt Kursus</h2>
+                <form id="kursus-form" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kursus">Kursus: *</label>
+                            <input type="text" id="kursus" name="kursus" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sted">Sted: *</label>
+                            <input type="text" id="sted" name="sted" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="arrangor">Arrangør: *</label>
+                            <input type="text" id="arrangor" name="arrangor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pris">Pris (kr.): *</label>
+                            <input type="number" id="pris" name="pris" step="0.01" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Dato: *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="file">Certifikat/Fil: *</label>
+                        <input type="file" id="file" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Tilføj Kursus</button>
+                </form>
+            </div>
+
+            <!-- Kursus Section -->
+            <div class="profile-section">
+                <h2 class="section-title">Mine Kurser</h2>
+                <div id="kursus-table-container">
+                    <table class="kursus-table" id="kursus-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Kursus</th>
+                                <th>Sted</th>
+                                <th>Arrangør</th>
+                                <th>Pris</th>
+                                <th>Dato</th>
+                                <th>Fil</th>
+                                <th>Handlinger</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kursus-table-body">
+                        </tbody>
+                    </table>
+                    <div id="kursus-empty" class="empty-state">
+                        <h3>Ingen kurser fundet</h3>
+                        <p>Du har endnu ikke tilføjet nogen kurser.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load profile data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+            loadKursusTable();
+        });
+
+        // Toggle collapsible sections
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId);
+            const header = content.previousElementSibling;
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                header.classList.add('expanded');
+            } else {
+                content.style.display = 'none';
+                header.classList.remove('expanded');
+            }
+        }
+
+        function loadProfileData() {
+            fetch('/api/profile/profile-page-data/', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('username').value = data.user.username;
+                document.getElementById('email').value = data.user.email || '';
+                document.getElementById('first_name').value = data.user.first_name || '';
+                document.getElementById('last_name').value = data.user.last_name || '';
+                document.getElementById('trainer_for').value = data.profile.trainer_for || '';
+                document.getElementById('reg_number').value = data.profile.reg_number || '';
+                document.getElementById('account_number').value = data.profile.account_number || '';
+            })
+            .catch(error => {
+                console.error('Error loading profile data:', error);
+                showError('Fejl ved indlæsning af profildata: ' + error.message);
+            });
+        }
+
+        function checkRequiredFields() {
+            // Since profile fields are now set during registration, 
+            // we can always show the kursus form
+            const notice = document.getElementById('required-notice');
+            if (notice) {
+                notice.style.display = 'none';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+
+            // Update user info
+            const userData = {
+                email: formData.get('email'),
+                first_name: formData.get('first_name'),
+                last_name: formData.get('last_name')
+            };
+
+            // Update profile data
+            const profileData = {
+                trainer_for: formData.get('trainer_for'),
+                reg_number: formData.get('reg_number'),
+                account_number: formData.get('account_number')
+            };
+
+            // Update user info first
+            fetch('/api/user/update/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Then update profile
+                    return fetch('/api/profile/update/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(profileData)
+                    });
+                } else {
+                    throw new Error(data.error || 'Fejl ved opdatering af brugerinfo');
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    showSuccess('Profil opdateret succesfuldt!');
+                } else {
+                    throw new Error(data.error || 'Fejl ved opdatering af profil');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                showError('Fejl ved opdatering af profil: ' + error.message);
+            });
+        });
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+            const errorDiv = document.getElementById('error-message');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            const successDiv = document.getElementById('success-message');
+            if (successDiv) {
+                successDiv.style.display = 'none';
+            }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Kursus Table Functions
+        function loadKursusTable() {
+            fetch('/api/kursus/', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayKursusTable(data);
+            })
+            .catch(error => {
+                console.error('Error loading kursus data:', error);
+                showError('Fejl ved indlæsning af kursusdata: ' + error.message);
+            });
+        }
+
+        function displayKursusTable(kursusList) {
+            const table = document.getElementById('kursus-table');
+            const tableBody = document.getElementById('kursus-table-body');
+            const emptyState = document.getElementById('kursus-empty');
+            
+            if (kursusList.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+            
+            // Show all kursus records since we have inline editing
+            const displayList = kursusList;
+            
+            tableBody.innerHTML = displayList.map(kursus => `
+                <tr>
+                    <td>${kursus.kursus}</td>
+                    <td>${kursus.sted}</td>
+                    <td>${kursus.arrangor}</td>
+                    <td>${kursus.pris} kr.</td>
+                    <td>${new Date(kursus.date).toLocaleDateString('da-DK')}</td>
+                    <td>
+                        ${kursus.file ? 
+                            `<a href="${kursus.file}" class="file-link" target="_blank">${kursus.filename}</a>` : 
+                            'Ingen fil'
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editKursus(${kursus.id})" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">Rediger</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteKursus(${kursus.id})" style="padding: 5px 10px; font-size: 12px;">Slet</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // No longer needed since profile fields are set during registration
+
+        // Auto-save functionality for profile fields
+        function autoSaveProfile() {
+            // Update user fields
+            const userData = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value
+            };
+
+            // Update profile fields
+            const profileData = {
+                trainer_for: document.getElementById('trainer_for').value,
+                reg_number: document.getElementById('reg_number').value,
+                account_number: document.getElementById('account_number').value
+            };
+
+            // Update user info first
+            fetch('/api/user/update/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Then update profile
+                    return fetch('/api/profile/update/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(profileData)
+                    });
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show subtle save indicator
+                    showAutoSaveIndicator();
+                }
+            })
+            .catch(error => {
+                console.error('Auto-save error:', error);
+            });
+        }
+
+        function showAutoSaveIndicator() {
+            // Create or update save indicator
+            let indicator = document.getElementById('auto-save-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'auto-save-indicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #28a745;
+                    color: white;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    z-index: 1000;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                `;
+                document.body.appendChild(indicator);
+            }
+            
+            indicator.textContent = '✓ Gemt automatisk';
+            indicator.style.opacity = '1';
+            
+            // Hide after 2 seconds
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 2000);
+        }
+
+        // Add auto-save event listeners to profile fields
+        const profileFields = ['first_name', 'last_name', 'trainer_for', 'reg_number', 'account_number'];
+        profileFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                // Auto-save on blur (when field loses focus)
+                field.addEventListener('blur', () => {
+                    // Small delay to ensure value is updated
+                    setTimeout(autoSaveProfile, 100);
+                });
+            }
+        });
+
+
+        // Edit and Delete functions
+        function editKursus(kursusId) {
+            fetch(`/api/kursus/${kursusId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+                .then(data => {
+                    // Fill the form with existing data
+                    document.getElementById('kursus').value = data.kursus;
+                    document.getElementById('sted').value = data.sted;
+                    document.getElementById('arrangor').value = data.arrangor;
+                    document.getElementById('pris').value = data.pris;
+                    document.getElementById('date').value = data.date;
+                
+                // Change form to update mode
+                const form = document.getElementById('kursus-form');
+                form.dataset.editId = kursusId;
+                form.querySelector('button[type="submit"]').textContent = 'Opdater Kursus';
+                
+                // Scroll to form
+                form.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(error => {
+                console.error('Error loading kursus:', error);
+                showError('Fejl ved indlæsning af kursus: ' + error.message);
+            });
+        }
+
+        function deleteKursus(kursusId) {
+            if (confirm('Er du sikker på, at du vil slette dette kursus?')) {
+                fetch(`/api/kursus/${kursusId}/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showSuccess('Kursus slettet succesfuldt!');
+                        loadKursusTable();
+                    } else {
+                        throw new Error('Fejl ved sletning af kursus');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting kursus:', error);
+                    showError('Fejl ved sletning af kursus: ' + error.message);
+                });
+            }
+        }
+
+        // Update form submission to handle both create and update
+        document.getElementById('kursus-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const editId = this.dataset.editId;
+            
+            if (editId) {
+                // Update existing kursus
+                fetch(`/api/kursus/${editId}/update/`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        showSuccess('Kursus opdateret succesfuldt!');
+                        this.reset();
+                        delete this.dataset.editId;
+                        this.querySelector('button[type="submit"]').textContent = 'Tilføj Kursus';
+                        loadKursusTable();
+                    } else if (data.error) {
+                        showError(data.error);
+                    } else {
+                        showError('Fejl ved opdatering af kursus: ' + JSON.stringify(data));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating kursus:', error);
+                    showError('Fejl ved opdatering af kursus: ' + error.message);
+                });
+            } else {
+                // Create new kursus
+                fetch('/api/kursus/create/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        showSuccess('Kursus tilføjet succesfuldt!');
+                        this.reset();
+                        loadKursusTable();
+                    } else if (data.error) {
+                        showError(data.error);
+                    } else {
+                        showError('Fejl ved tilføjelse af kursus: ' + JSON.stringify(data));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating kursus:', error);
+                    showError('Fejl ved tilføjelse af kursus: ' + error.message);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

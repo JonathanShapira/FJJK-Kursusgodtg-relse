@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Eksport - FJJK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(45, 45, 45, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #d4af37;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #d4af37;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header .emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .header p {
+            color: #cccccc;
+            font-size: 1.1em;
+        }
+
+        .export-section {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #444;
+        }
+
+        .export-section h2 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .export-section p {
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(45deg, #f4d03f, #d4af37);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #666, #888);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #888, #aaa);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 26, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .stat-card h3 {
+            color: #d4af37;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Eksport</h1>
+            <p>Eksporter kursus data og vedhæftede filer</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>{{ total_users }}</h3>
+                <p>Brugere</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ total_kursus }}</h3>
+                <p>Kurser</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ total_files }}</h3>
+                <p>Vedhæftede Filer</p>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <h2>Excel Eksport</h2>
+            <p>Eksporter alle kursus data til en Excel fil med følgende kolonner:</p>
+            <ul style="color: #cccccc; margin-left: 20px; margin-bottom: 20px;">
+                <li>Fulde Navn</li>
+                <li>Træner for</li>
+                <li>Kursusnavn og Arrangør</li>
+                <li>Kursussted</li>
+                <li>Dato for Kursus</li>
+                <li>Pris</li>
+                <li>Bilagsnr</li>
+            </ul>
+            <a href="{% url 'export-excel' %}" class="btn">Download Excel Fil</a>
+        </div>
+
+        <div class="export-section">
+            <h2>ZIP Eksport</h2>
+            <p>Eksporter alle vedhæftede filer som en ZIP fil. Filerne vil blive navngivet med deres bilagsnr.</p>
+            <a href="{% url 'export-zip' %}" class="btn">Download ZIP Fil</a>
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'admin:index' %}">← Tilbage til Admin Panel</a>
+        </div>
+    </div>
+</body>
+</html>

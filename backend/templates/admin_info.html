@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Adgang - FJJK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .admin-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 600px;
+            border: 3px solid #d4af37;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header h1::before {
+            content: '🥋';
+            margin-right: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .info-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .info-section h2::before {
+            content: '🙏';
+            margin-right: 10px;
+        }
+
+        .info-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            color: #666;
+            line-height: 1.6;
+            margin-left: 20px;
+        }
+
+        .info-section li {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 12px 30px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border-color: #6c757d;
+            color: white;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .warning::before {
+            content: '⚠️ ';
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="header">
+            <h1>🥋 Administrator Adgang</h1>
+            <p>Information om administrator funktioner</p>
+        </div>
+
+        <div class="warning">
+            <strong>Vigtigt:</strong> Kun superusers kan få adgang til administrator panelet.
+        </div>
+
+        <div class="info-section">
+            <h2>⚔️ Administrator Funktioner</h2>
+            <p>Som administrator har du adgang til følgende funktioner:</p>
+            <ul>
+                <li><strong>Brugeradministration:</strong> Se og administrer alle brugere i systemet</li>
+                <li><strong>Profiladministration:</strong> Se og rediger alle brugerprofiler</li>
+                <li><strong>Kursusadministration:</strong> Se og administrer alle kurser</li>
+                <li><strong>Systemindstillinger:</strong> Konfigurer systemindstillinger</li>
+                <li><strong>Rapporter:</strong> Generer rapporter og statistikker</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>🔐 Sådan får du adgang</h2>
+            <p>For at få administrator adgang skal du:</p>
+            <ol>
+                <li>Være logget ind som superuser</li>
+                <li>Klikke på "Administrator Panel" knappen nedenfor</li>
+                <li>Du vil blive omdirigeret til Django admin panelet</li>
+            </ol>
+        </div>
+
+        <div class="info-section">
+            <h2>📋 Administrator Panel</h2>
+            <p>I administrator panelet kan du:</p>
+            <ul>
+                <li>Se alle brugere og deres profiler</li>
+                <li>Tilføje, redigere eller slette brugere</li>
+                <li>Administrere kurser for alle brugere</li>
+                <li>Se systemstatistikker</li>
+                <li>Konfigurere systemindstillinger</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/admin/" class="btn">Administrator Panel</a>
+            <a href="/export/" class="btn">Data Eksport</a>
+            <a href="/login/" class="btn btn-secondary">Tilbage til Login</a>
+        </div>
+    </div>
+</body>
+</html>
