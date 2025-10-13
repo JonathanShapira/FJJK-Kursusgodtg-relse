@@ -18,6 +18,7 @@ ALLOWED_HOSTS = [
     '.railway.app',
     '.herokuapp.com',
     '.onrender.com',
+    'fjjk-kursusgodtg-relse.onrender.com',  # Your specific Render domain
     # Add your custom domain here
 ]
 

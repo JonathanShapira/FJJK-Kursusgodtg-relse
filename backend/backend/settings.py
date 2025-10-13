@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-g*92^b62u^xad#y)2ll)v^98p0eg7m34qo7#q7x!2g@4cpl@)v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'fjjk-kursusgodtg-relse.onrender.com',  # Your specific Render domain
+]
 
 
 # Application definition
