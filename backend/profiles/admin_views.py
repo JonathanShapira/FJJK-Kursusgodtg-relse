@@ -29,7 +29,7 @@ def admin_export_page(request):
     # Get statistics
     total_users = UserProfile.objects.count()
     total_kursus = Kursus.objects.count()
-    total_files = Kursus.objects.filter(file__isnull=False).exclude(file='').count()
+    total_files = Kursus.objects.filter(file_data__isnull=False).exclude(file_data=b'').count()
     
     context = {
         'total_users': total_users,

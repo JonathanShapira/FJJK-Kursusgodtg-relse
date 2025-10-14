@@ -90,7 +90,7 @@ class KursusTestCase(TestCase):
         self.assertEqual(kursus.sted, 'File Sted')
         self.assertEqual(kursus.arrangor, 'File Arrangør')
         self.assertEqual(float(kursus.pris), 150.00)
-        self.assertTrue(kursus.file)
+        self.assertTrue(kursus.has_file)
 
     def test_kursus_update_view(self):
         """Test updating a kursus"""
