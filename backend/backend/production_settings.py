@@ -26,11 +26,11 @@ ALLOWED_HOSTS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': 'kursusdatabase',
+        'USER': 'jonathan',
+        'PASSWORD': 'mO3USxWyQiTDQPcHzXY4akjub8KyIi4B',
+        'HOST': 'dpg-d3mlp133fgac73b2dod0-a',
+        'PORT': '5432',
     }
 }
 

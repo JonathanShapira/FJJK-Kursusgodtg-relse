@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kursusdatabase',
+        'USER': 'jonathan',
+        'PASSWORD': 'mO3USxWyQiTDQPcHzXY4akjub8KyIi4B',
+        'HOST': 'dpg-d3mlp133fgac73b2dod0-a',
+        'PORT': '5432',
     }
 }
 
