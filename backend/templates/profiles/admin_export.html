@@ -218,7 +218,7 @@
         </div>
 
         <div class="export-section">
-            <h2>Excel Eksport</h2>
+            <h2>Excel Eksport - Alle Kurser</h2>
             <p>Eksporter alle kursus data til en Excel fil med følgende kolonner:</p>
             <ul style="color: #cccccc; margin-left: 20px; margin-bottom: 20px;">
                 <li>Fulde Navn</li>
@@ -230,6 +230,18 @@
                 <li>Bilagsnr</li>
             </ul>
             <a href="{% url 'export-excel' %}" class="btn">Download Excel Fil</a>
+        </div>
+
+        <div class="export-section">
+            <h2>Excel Eksport - Bruger Oversigt</h2>
+            <p>Eksporter en oversigt over brugere med deres totale kursus priser:</p>
+            <ul style="color: #cccccc; margin-left: 20px; margin-bottom: 20px;">
+                <li>Fulde Navn</li>
+                <li>Reg nr</li>
+                <li>Konto nr</li>
+                <li>Total Pris for Kurser</li>
+            </ul>
+            <a href="{% url 'export-user-summary' %}" class="btn">Download Bruger Oversigt</a>
         </div>
 
         <div class="export-section">

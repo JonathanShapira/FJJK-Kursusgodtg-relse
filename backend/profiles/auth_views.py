@@ -13,11 +13,8 @@ def login_view(request):
     Custom login view
     """
     if request.user.is_authenticated:
-        # If user is a superuser, redirect to admin
-        if request.user.is_superuser:
-            return redirect('/admin/')
-        else:
-            return redirect('/profile/profile-page/')
+        # All users (including superusers) redirect to profile page
+        return redirect('/profile/profile-page/')
     
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -26,11 +23,8 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirect superusers to admin, regular users to profile
-            if user.is_superuser:
-                return redirect('/admin/')
-            else:
-                return redirect('/profile/profile-page/')
+            # All users (including superusers) redirect to profile page
+            return redirect('/profile/profile-page/')
         else:
             messages.error(request, 'Invalid username or password')
     
@@ -110,13 +104,11 @@ def logout_view(request):
 
 def home_view(request):
     """
-    Home view - redirect to login, profile, or admin
+    Home view - redirect to login or profile
     """
     if request.user.is_authenticated:
-        if request.user.is_superuser:
-            return redirect('/admin/')
-        else:
-            return redirect('/profile/profile-page/')
+        # All users (including superusers) redirect to profile page
+        return redirect('/profile/profile-page/')
     else:
         return redirect('/login/')
 

@@ -28,6 +28,7 @@ urlpatterns = [
     # Admin export URLs
     path('export/', admin_views.admin_export_page, name='admin-export'),
     path('export/excel/', admin_views.export_excel, name='export-excel'),
+    path('export/user-summary/', admin_views.export_user_summary_excel, name='export-user-summary'),
     path('export/zip/', admin_views.export_zip, name='export-zip'),
     
     # Home URL (must come last)

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.conf import settings
+from django.db.models import Sum
 from .models import UserProfile, Kursus
 from .serializers import KursusAdminSerializer
 import zipfile
@@ -159,4 +160,81 @@ def export_zip(request):
         
     except Exception as e:
         messages.error(request, f'Fejl ved eksport af ZIP fil: {str(e)}')
+        return redirect('admin-export')
+
+
+@user_passes_test(is_admin)
+def export_user_summary_excel(request):
+    """Export user summary with total course prices to Excel file"""
+    if not OPENPYXL_AVAILABLE:
+        messages.error(request, 'openpyxl er ikke installeret. Installer det med: pip install openpyxl')
+        return redirect('admin-export')
+    
+    try:
+        # Get all user profiles with their course totals
+        user_profiles = UserProfile.objects.select_related('user').annotate(
+            total_pris=Sum('user__kursus_records__pris')
+        ).filter(total_pris__isnull=False).order_by('user__last_name', 'user__first_name')
+        
+        if not user_profiles.exists():
+            messages.warning(request, 'Ingen brugere med kurser fundet.')
+            return redirect('admin-export')
+        
+        # Create workbook and worksheet
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Bruger Oversigt"
+        
+        # Define headers
+        headers = [
+            'Fulde Navn',
+            'Reg nr',
+            'Konto nr',
+            'Total Pris for Kurser'
+        ]
+        
+        # Add headers to worksheet
+        for col, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col, value=header)
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(horizontal='center')
+        
+        # Add data rows
+        for row, profile in enumerate(user_profiles, 2):
+            # Get full name
+            full_name = f"{profile.user.first_name} {profile.user.last_name}".strip()
+            if not full_name:
+                full_name = profile.user.username
+            
+            # Add row data
+            ws.cell(row=row, column=1, value=full_name)
+            ws.cell(row=row, column=2, value=profile.reg_number)
+            ws.cell(row=row, column=3, value=profile.account_number)
+            ws.cell(row=row, column=4, value=float(profile.total_pris))
+        
+        # Auto-adjust column widths
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            adjusted_width = min(max_length + 2, 50)
+            ws.column_dimensions[column_letter].width = adjusted_width
+        
+        # Create response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = f'attachment; filename="bruger_oversigt_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx"'
+        
+        # Save workbook to response
+        wb.save(response)
+        return response
+        
+    except Exception as e:
+        messages.error(request, f'Fejl ved eksport af bruger oversigt: {str(e)}')
         return redirect('admin-export')
