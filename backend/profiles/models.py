@@ -7,11 +7,6 @@ from datetime import datetime
 import os
 
 
-def kursus_file_upload_path(instance, filename):
-    """Generate upload path for kursus files"""
-    return f'kursus_files/{instance.user.id}/{filename}'
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     trainer_for = models.CharField(max_length=100, verbose_name="Træner for")
@@ -46,7 +41,13 @@ class Kursus(models.Model):
     pris = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Pris")
     date = models.DateField(verbose_name="Dato")
     bilagsnr = models.CharField(max_length=50, verbose_name="Bilagsnr", unique=True, editable=False)
-    file = models.FileField(upload_to=kursus_file_upload_path, verbose_name="Fil", null=True, blank=True)
+    
+    # File storage as blob in database
+    file_data = models.BinaryField(verbose_name="Fil Data", null=True, blank=True)
+    file_name = models.CharField(max_length=255, verbose_name="Fil Navn", null=True, blank=True)
+    file_size = models.PositiveIntegerField(verbose_name="Fil Størrelse", null=True, blank=True)
+    file_type = models.CharField(max_length=100, verbose_name="Fil Type", null=True, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -72,7 +73,10 @@ class Kursus(models.Model):
 
     @property
     def filename(self):
-        """Get the filename from the file path"""
-        if self.file:
-            return os.path.basename(self.file.name)
-        return None
+        """Get the filename from the stored file data"""
+        return self.file_name
+    
+    @property
+    def has_file(self):
+        """Check if the kursus has an attached file"""
+        return self.file_data is not None and len(self.file_data) > 0

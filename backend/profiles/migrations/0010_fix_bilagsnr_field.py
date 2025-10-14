@@ -44,7 +44,7 @@ def reverse_populate_bilagsnr(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('profiles', '0009_merge_20251013_2042'),
+        ('profiles', '0008_auto_generate_bilagsnr'),
     ]
 
     operations = [

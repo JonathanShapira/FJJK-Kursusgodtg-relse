@@ -127,7 +127,7 @@ def export_zip(request):
     """Export all kursus attachments as ZIP file"""
     try:
         # Get all kursus records with files
-        kursus_records = Kursus.objects.filter(file__isnull=False).exclude(file='')
+        kursus_records = Kursus.objects.filter(file_data__isnull=False).exclude(file_data=b'')
         
         if not kursus_records.exists():
             messages.warning(request, 'Ingen filer fundet til eksport.')
@@ -139,22 +139,18 @@ def export_zip(request):
         
         with zipfile.ZipFile(response, 'w') as zip_file:
             for kursus in kursus_records:
-                if kursus.file and kursus.file.name:
-                    # Get the file path
-                    file_path = os.path.join(settings.MEDIA_ROOT, kursus.file.name)
+                if kursus.has_file:
+                    # Get file extension from stored filename
+                    file_extension = os.path.splitext(kursus.file_name)[1] if kursus.file_name else ''
                     
-                    if os.path.exists(file_path):
-                        # Get file extension
-                        file_extension = os.path.splitext(kursus.file.name)[1]
-                        
-                        # Create filename using only bilagsnr
-                        if kursus.bilagsnr:
-                            filename = f"{kursus.bilagsnr}{file_extension}"
-                        else:
-                            filename = f"{kursus.id}{file_extension}"
-                        
-                        # Add file to ZIP
-                        zip_file.write(file_path, filename)
+                    # Create filename using only bilagsnr
+                    if kursus.bilagsnr:
+                        filename = f"{kursus.bilagsnr}{file_extension}"
+                    else:
+                        filename = f"{kursus.id}{file_extension}"
+                    
+                    # Add file data to ZIP
+                    zip_file.writestr(filename, kursus.file_data)
         
         return response
         

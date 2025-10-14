@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('profiles', '0004_alter_kursus_file_optional'),
+        ('profiles', '0003_alter_kursus_file'),
     ]
 
     operations = [

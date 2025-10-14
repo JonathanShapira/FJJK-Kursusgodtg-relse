@@ -35,21 +35,61 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
 class KursusSerializer(serializers.ModelSerializer):
     filename = serializers.ReadOnlyField()
+    file_url = serializers.SerializerMethodField()
     
     class Meta:
         model = Kursus
-        fields = ['id', 'kursus', 'sted', 'arrangor', 'pris', 'date', 'file', 'filename', 'created_at', 'updated_at']
+        fields = ['id', 'kursus', 'sted', 'arrangor', 'pris', 'date', 'file_name', 'file_size', 'file_type', 'filename', 'file_url', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_file_url(self, obj):
+        """Generate URL for file download"""
+        if obj.has_file:
+            return f"/api/kursus/{obj.id}/file/"
+        return None
 
 
 class KursusCreateSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(write_only=True, required=True)
+    
     class Meta:
         model = Kursus
         fields = ['kursus', 'sted', 'arrangor', 'pris', 'date', 'file']
     
-    def validate_file(self, value):
-        # File is now optional for testing purposes
-        return value
+    def create(self, validated_data):
+        """Handle file upload and store as blob"""
+        file_obj = validated_data.pop('file')
+        
+        # Create kursus instance
+        kursus = Kursus.objects.create(**validated_data)
+        
+        # Store file as blob
+        if file_obj:
+            kursus.file_data = file_obj.read()
+            kursus.file_name = file_obj.name
+            kursus.file_size = file_obj.size
+            kursus.file_type = file_obj.content_type
+            kursus.save()
+        
+        return kursus
+    
+    def update(self, instance, validated_data):
+        """Handle file update and store as blob"""
+        file_obj = validated_data.pop('file', None)
+        
+        # Update other fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        # Update file if provided
+        if file_obj:
+            instance.file_data = file_obj.read()
+            instance.file_name = file_obj.name
+            instance.file_size = file_obj.size
+            instance.file_type = file_obj.content_type
+        
+        instance.save()
+        return instance
 
 
 class KursusAdminSerializer(serializers.ModelSerializer):
@@ -60,7 +100,7 @@ class KursusAdminSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Kursus
-        fields = ['id', 'kursus', 'sted', 'arrangor', 'pris', 'date', 'bilagsnr', 'file', 'filename', 'user_full_name', 'user_trainer_for', 'created_at', 'updated_at']
+        fields = ['id', 'kursus', 'sted', 'arrangor', 'pris', 'date', 'bilagsnr', 'file_name', 'file_size', 'file_type', 'filename', 'user_full_name', 'user_trainer_for', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
     
     def get_user_full_name(self, obj):

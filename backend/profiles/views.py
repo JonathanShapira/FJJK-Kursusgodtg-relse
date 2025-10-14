@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import UserProfile, Kursus
 from .serializers import UserProfileSerializer, UserProfileUpdateSerializer, UserSerializer, KursusSerializer, KursusCreateSerializer
 
@@ -190,3 +190,22 @@ def delete_kursus(request, kursus_id):
     kursus = get_object_or_404(Kursus, id=kursus_id, user=request.user)
     kursus.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def serve_file(request, kursus_id):
+    """
+    Serve file from database blob storage
+    """
+    kursus = get_object_or_404(Kursus, id=kursus_id, user=request.user)
+    
+    if not kursus.has_file:
+        return Response({'error': 'No file found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    # Create HTTP response with file data
+    response = HttpResponse(kursus.file_data, content_type=kursus.file_type)
+    response['Content-Disposition'] = f'attachment; filename="{kursus.file_name}"'
+    response['Content-Length'] = kursus.file_size
+    
+    return response

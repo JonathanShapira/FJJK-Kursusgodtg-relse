@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/kursus/<int:kursus_id>/', views.get_kursus_detail, name='kursus-detail'),
     path('api/kursus/<int:kursus_id>/update/', views.update_kursus, name='kursus-update'),
     path('api/kursus/<int:kursus_id>/delete/', views.delete_kursus, name='kursus-delete'),
+    path('api/kursus/<int:kursus_id>/file/', views.serve_file, name='kursus-file'),
     
     # Profile API URLs
     path('api/profile/', views.UserProfileDetailView.as_view(), name='profile-detail'),

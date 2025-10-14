@@ -675,8 +675,8 @@
                     <td>${kursus.pris} kr.</td>
                     <td>${new Date(kursus.date).toLocaleDateString('da-DK')}</td>
                     <td>
-                        ${kursus.file ? 
-                            `<a href="${kursus.file}" class="file-link" target="_blank">${kursus.filename}</a>` : 
+                        ${kursus.file_url ? 
+                            `<a href="${kursus.file_url}" class="file-link" target="_blank">${kursus.filename}</a>` : 
                             'Ingen fil'
                         }
                     </td>
