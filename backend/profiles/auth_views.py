@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from .models import UserProfile
 import json
 
 
@@ -75,13 +76,12 @@ def register_view(request):
                 last_name=last_name
             )
             
-            # Create user profile with the provided data
-            UserProfile.objects.create(
-                user=user,
-                trainer_for=trainer_for,
-                reg_number=reg_number,
-                account_number=account_number
-            )
+            # Update the auto-created user profile with the provided data
+            profile = user.profile
+            profile.trainer_for = trainer_for
+            profile.reg_number = reg_number
+            profile.account_number = account_number
+            profile.save()
             
             # Automatically log in the user
             login(request, user)

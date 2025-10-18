@@ -193,6 +193,142 @@ class KursusPageTestCase(TestCase):
         self.assertContains(response, 'grid-item')
 
 
+class ProfileCreationTestCase(TestCase):
+    def setUp(self):
+        """Set up test data for profile creation tests"""
+        self.client = Client()
+
+    def test_user_registration_creates_profile(self):
+        """Test that user registration creates a UserProfile with required fields"""
+        registration_data = {
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'first_name': 'New',
+            'last_name': 'User',
+            'password1': 'newpass123',
+            'password2': 'newpass123',
+            'trainer_for': 'Test Company',
+            'reg_number': 'REG123',
+            'account_number': 'ACC456'
+        }
+        
+        response = self.client.post('/register/', data=registration_data)
+        
+        # Should redirect to profile page on success
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['redirect'], '/profile/profile-page/')
+        
+        # Verify user was created
+        user = User.objects.get(username='newuser')
+        self.assertEqual(user.email, 'newuser@example.com')
+        self.assertEqual(user.first_name, 'New')
+        self.assertEqual(user.last_name, 'User')
+        
+        # Verify UserProfile was created with correct data
+        profile = UserProfile.objects.get(user=user)
+        self.assertEqual(profile.trainer_for, 'Test Company')
+        self.assertEqual(profile.reg_number, 'REG123')
+        self.assertEqual(profile.account_number, 'ACC456')
+
+    def test_user_registration_fails_without_profile_fields(self):
+        """Test that user registration fails when profile fields are missing"""
+        registration_data = {
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'first_name': 'New',
+            'last_name': 'User',
+            'password1': 'newpass123',
+            'password2': 'newpass123',
+            # Missing profile fields
+        }
+        
+        response = self.client.post('/register/', data=registration_data)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertFalse(data['success'])
+        self.assertIn('Alle profil felter er påkrævet', data['error'])
+
+    def test_user_registration_fails_with_password_mismatch(self):
+        """Test that user registration fails when passwords don't match"""
+        registration_data = {
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'first_name': 'New',
+            'last_name': 'User',
+            'password1': 'newpass123',
+            'password2': 'differentpass',
+            'trainer_for': 'Test Company',
+            'reg_number': 'REG123',
+            'account_number': 'ACC456'
+        }
+        
+        response = self.client.post('/register/', data=registration_data)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertFalse(data['success'])
+        self.assertIn('Passwords do not match', data['error'])
+
+    def test_user_registration_fails_with_existing_username(self):
+        """Test that user registration fails when username already exists"""
+        # Create existing user
+        User.objects.create_user(
+            username='existinguser',
+            email='existing@example.com',
+            password='existingpass123'
+        )
+        
+        registration_data = {
+            'username': 'existinguser',  # Same username
+            'email': 'newuser@example.com',
+            'first_name': 'New',
+            'last_name': 'User',
+            'password1': 'newpass123',
+            'password2': 'newpass123',
+            'trainer_for': 'Test Company',
+            'reg_number': 'REG123',
+            'account_number': 'ACC456'
+        }
+        
+        response = self.client.post('/register/', data=registration_data)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertFalse(data['success'])
+        self.assertIn('Username already exists', data['error'])
+
+    def test_user_registration_fails_with_existing_email(self):
+        """Test that user registration fails when email already exists"""
+        # Create existing user
+        User.objects.create_user(
+            username='existinguser',
+            email='existing@example.com',
+            password='existingpass123'
+        )
+        
+        registration_data = {
+            'username': 'newuser',
+            'email': 'existing@example.com',  # Same email
+            'first_name': 'New',
+            'last_name': 'User',
+            'password1': 'newpass123',
+            'password2': 'newpass123',
+            'trainer_for': 'Test Company',
+            'reg_number': 'REG123',
+            'account_number': 'ACC456'
+        }
+        
+        response = self.client.post('/register/', data=registration_data)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertFalse(data['success'])
+        self.assertIn('Email already exists', data['error'])
+
+
 class ProfilePageTestCase(TestCase):
     def setUp(self):
         """Set up test data for profile page tests"""
